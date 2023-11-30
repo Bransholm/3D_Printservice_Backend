@@ -5,6 +5,7 @@ import cors from "cors";
 //Route imports goes here:
 import catalogueRouter from "./catalogue-routes/catalogue.js";
 import startRouter from "./start.js";
+import productRouter from "./product-routes/products.js"
 
 const app = express();
 const port = process.env.PORT || 4811;
@@ -15,6 +16,7 @@ app.use(cors());
 //The routes goes here:
 app.use("/start", startRouter);
 app.use("/catalogue", catalogueRouter);
+app.use("/product", productRouter);
 
 
 app.listen(port, () => {
