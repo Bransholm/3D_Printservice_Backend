@@ -3,9 +3,9 @@ import express from "express";
 import cors from "cors";
 
 //Route imports goes here:
-import catalogueRouter from "./catalogue-routes/catalogue.js";
+import catalogueRouter from "./routes/route-files/catalogue.js";
 import startRouter from "./start.js";
-import productRouter from "./product-routes/products.js"
+import productRouter from "./product-routes/products.js";
 
 const app = express();
 const port = process.env.PORT || 4811;
@@ -18,12 +18,8 @@ app.use("/start", startRouter);
 app.use("/catalogue", catalogueRouter);
 app.use("/product", productRouter);
 
-
 app.listen(port, () => {
   console.log(
     `The sever is running on port http://127.0.0.1:${port}\n 3DPrintservice_backend is live`
   );
 });
-
-
-
