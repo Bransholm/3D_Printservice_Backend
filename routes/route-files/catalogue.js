@@ -3,25 +3,17 @@ import dbConnection from "../../data-layer/data.js";
 // import { request } from "http";
 // import { error } from "console";
 // import { Connection } from "mysql2/typings/mysql/lib/Connection.js";
+
+// Import error handling functions:
+import {
+  InternalServerErrorResponse,
+  rowIdNotFoundResponse,
+  successFullDeleteResponse,
+} from "../router-error-handling/routerErrorResponse.js";
+// Import SQL-queries:
+
 const catalogueRouter = Router();
 
-// Genbrugelige funktioner.
-function InternalServerErrorResponse(error, response) {
-  console.error(error);
-  response
-    .status(500)
-    .json({ message: "An Internal Server Error Has Occured" });
-}
-
-function rowIdNotFoundResponse(id, response) {
-  return response
-    .status(404)
-    .json({ error: `The artist with the id ${id} does not exist` });
-}
-
-function successFullDeleteResponse(id, response) {
-  response.json({ message: `row ${id} deleted successfully` });
-}
 
 // QUERY-STRING + db.execute
 async function getCatalougeReadQuery() {
@@ -69,8 +61,7 @@ async function getCatalogReadByIDQuery(id, request) {
 }
 
 // Delete catalogue item by ID
-async function deleteCatalogueByIdQuery(request) {
-  const id = request.params.id;
+async function deleteCatalogueByIdQuery(id, request) {
   const values = [id];
   // Delete the given item from the catalogue
   const queryString = "DELETE FROM catalogue WHERE id=?";
@@ -99,6 +90,7 @@ catalogueRouter.get("/:id", async (request, response) => {
       response.json(result[0]);
     }
   } catch (error) {
+    console.log(InternalServerErrorResponse(error,response))
     InternalServerErrorResponse(error, response);
   }
 });
@@ -159,9 +151,10 @@ catalogueRouter.put("/:id", async (request, response) => {
 
 // DELETE item from Catalogue
 catalogueRouter.delete("/:id", async (request, response) => {
+  const id = request.params.id;
   let result;
   try {
-    result = await deleteCatalogueByIdQuery(request);
+    result = await deleteCatalogueByIdQuery(id, request);
     if (result.affectedRows === 0) {
       rowIdNotFoundResponse(id, response);
     } else {
