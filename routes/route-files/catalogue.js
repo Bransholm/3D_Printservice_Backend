@@ -59,13 +59,13 @@ async function getCatalogueCreateQuery(request) {
 }
 
 // Get catalog item by ID
-async function getCatalogReadByIDQuery(request) {
-  const id = request.params.id;
+async function getCatalogReadByIDQuery(id, request) {
   const queryString = "SELECT * FROM catalogue WHERE id = ?";
   const values = [id];
 
   const [result] = await dbConnection.execute(queryString, values);
-  return [result];
+  console.log("Result is: ", result);
+  return result;
 }
 
 // Delete catalogue item by ID
@@ -75,12 +75,10 @@ async function deleteCatalogueByIdQuery(request) {
   // Delete the given item from the catalogue
   const queryString = "DELETE FROM catalogue WHERE id=?";
   const [result] = await dbConnection.query(queryString, values);
-  return [result];
+  return result;
 }
 
-// ...
-
-// CREATE artist
+// CREATE all catalogue Items
 catalogueRouter.post("/", async (request, response) => {
   try {
     const result = await getCatalogueCreateQuery(request);
@@ -90,10 +88,11 @@ catalogueRouter.post("/", async (request, response) => {
   }
 });
 
-// ...
+// Get catalogue item by ID
 catalogueRouter.get("/:id", async (request, response) => {
+  const id = request.params.id;
   try {
-    const result = await getCatalogReadByIDQuery(request);
+    const result = await getCatalogReadByIDQuery(id, request);
     if (result.length === 0) {
       rowIdNotFoundResponse(id, response);
     } else {
@@ -103,6 +102,8 @@ catalogueRouter.get("/:id", async (request, response) => {
     InternalServerErrorResponse(error, response);
   }
 });
+
+// DO WE NEED FILTER TABS...
 
 // Update catalog item by ID
 async function updateCatalogueQuery(request) {
@@ -128,17 +129,19 @@ async function updateCatalogueQuery(request) {
 
 // UPDATE specific catalogue itme
 catalogueRouter.put("/:id", async (request, response) => {
+  let result;
   try {
     // Start a transaction
     await dbConnection.beginTransaction();
 
     try {
-      updateCatalogueQuery(request);
+      result = await updateCatalogueQuery(request);
+      console.log(result);
 
       // Commit the transaction if the update is successful
       await dbConnection.commit();
 
-      if (result.affectedRows === 0) {
+      if (!result || result.affectedRows === 0) {
         rowIdNotFoundResponse(id, response);
       } else {
         response.json(result);
@@ -155,8 +158,9 @@ catalogueRouter.put("/:id", async (request, response) => {
 
 // DELETE item from Catalogue
 catalogueRouter.delete("/:id", async (request, response) => {
+  let result;
   try {
-    deleteCatalogueByIdQuery(request);
+    result = await deleteCatalogueByIdQuery(request);
     if (result.affectedRows === 0) {
       rowIdNotFoundResponse(id, response);
     } else {

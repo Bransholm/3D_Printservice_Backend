@@ -5,7 +5,7 @@ import cors from "cors";
 //Route imports goes here:
 import catalogueRouter from "./routes/route-files/catalogue.js";
 import startRouter from "./start.js";
-import productRouter from "./product-routes/products.js";
+import productRouter from "./routes/route-files/products.js";
 
 const app = express();
 const port = process.env.PORT || 4811;
