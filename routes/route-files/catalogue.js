@@ -106,9 +106,8 @@ catalogueRouter.get("/:id", async (request, response) => {
 // DO WE NEED FILTER TABS...
 
 // Update catalog item by ID
-async function updateCatalogueQuery(request) {
+async function updateCatalogueQuery(id, request) {
   const body = request.body;
-  const id = request.params.id;
   // Update query
   const updateQuery =
     "UPDATE catalogue SET Title=?, StandardSize=?, StandardWeight=?, ItemDescription=?, ImageLink=?, Category=? WHERE id=?;";
@@ -124,18 +123,20 @@ async function updateCatalogueQuery(request) {
 
   // Execute the update query within the transaction
   const [result] = await dbConnection.query(updateQuery, updateValues);
-  return [result];
+  return result;
 }
 
 // UPDATE specific catalogue itme
 catalogueRouter.put("/:id", async (request, response) => {
+  const id = request.params.id;
+
   let result;
   try {
     // Start a transaction
     await dbConnection.beginTransaction();
 
     try {
-      result = await updateCatalogueQuery(request);
+      result = await updateCatalogueQuery(id, request);
       console.log(result);
 
       // Commit the transaction if the update is successful
