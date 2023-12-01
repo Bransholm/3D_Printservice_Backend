@@ -9,81 +9,48 @@ import {
   InternalServerErrorResponse,
   rowIdNotFoundResponse,
   successFullDeleteResponse,
-} from "../router-error-handling/routerErrorResponse.js";
+} from "../router-error-handling/router-error-response.js";
 // Import SQL-queries:
+import {
+  readCatalougeQuery,
+  createCatalogueItemQuery,
+  readCatalogItemByIdQuery,
+  updateCatalogueQuery,
+  deleteCatalogueByIdQuery,
+} from "../query-files/catalogue-quries.js";
+
 
 const catalogueRouter = Router();
 
 
-// QUERY-STRING + db.execute
-async function getCatalougeReadQuery() {
-  const queryString = /*sql*/ `SELECT * FROM catalogue;`;
-  const [result] = await dbConnection.execute(queryString);
-  return result;
-}
-
-// Reads the catalogue data
-catalogueRouter.get("/", async (request, response) => {
-  try {
-    const result = await getCatalougeReadQuery();
-    response.json(result);
-  } catch (error) {
-    InternalServerErrorResponse(error, response);
-  }
-});
-
-// Create catalog item
-async function getCatalogueCreateQuery(request) {
-  const body = request.body;
-  const queryString =
-    "INSERT INTO catalogue (Title, StandardSize, StandardWeight, ItemDescription, ImageLink, Category) VALUES (?, ?, ?, ?, ?, ?);";
-  const values = [
-    body.Title,
-    body.StandardSize,
-    body.StandardWeight,
-    body.ItemDescription,
-    body.ImageLink,
-    body.Category,
-  ];
-
-  const result = await dbConnection.execute(queryString, values);
-  return result;
-}
-
-// Get catalog item by ID
-async function getCatalogReadByIDQuery(id, request) {
-  const queryString = "SELECT * FROM catalogue WHERE id = ?";
-  const values = [id];
-
-  const [result] = await dbConnection.execute(queryString, values);
-  console.log("Result is: ", result);
-  return result;
-}
-
-// Delete catalogue item by ID
-async function deleteCatalogueByIdQuery(id, request) {
-  const values = [id];
-  // Delete the given item from the catalogue
-  const queryString = "DELETE FROM catalogue WHERE id=?";
-  const [result] = await dbConnection.query(queryString, values);
-  return result;
-}
 
 // CREATE all catalogue Items
 catalogueRouter.post("/", async (request, response) => {
   try {
-    const result = await getCatalogueCreateQuery(request);
+    const result = await createCatalogueItemQuery(request);
     response.json(result);
   } catch (error) {
     InternalServerErrorResponse(error, response);
   }
 });
+
+
+// Reads the catalogue data
+catalogueRouter.get("/", async (request, response) => {
+  try {
+    const result = await readCatalougeQuery();
+    response.json(result);
+  } catch (error) {
+    InternalServerErrorResponse(error, response);
+  }
+});
+
 
 // Get catalogue item by ID
 catalogueRouter.get("/:id", async (request, response) => {
   const id = request.params.id;
   try {
-    const result = await getCatalogReadByIDQuery(id, request);
+    const result = await readCatalogItemByIdQuery(id, request);
     if (result.length === 0) {
       rowIdNotFoundResponse(id, response);
     } else {
@@ -94,29 +61,6 @@ catalogueRouter.get("/:id", async (request, response) => {
     InternalServerErrorResponse(error, response);
   }
 });
-
-// DO WE NEED FILTER TABS...
-
-// Update catalog item by ID
-async function updateCatalogueQuery(id, request) {
-  const body = request.body;
-  // Update query
-  const updateQuery =
-    "UPDATE catalogue SET Title=?, StandardSize=?, StandardWeight=?, ItemDescription=?, ImageLink=?, Category=? WHERE id=?;";
-  const updateValues = [
-    body.Title,
-    body.StandardSize,
-    body.StandardWeight,
-    body.ItemDescription,
-    body.ImageLink,
-    body.Category,
-    id,
-  ];
-
-  // Execute the update query within the transaction
-  const [result] = await dbConnection.query(updateQuery, updateValues);
-  return result;
-}
 
 // UPDATE specific catalogue itme
 catalogueRouter.put("/:id", async (request, response) => {
