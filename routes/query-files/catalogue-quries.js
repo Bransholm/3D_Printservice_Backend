@@ -1,4 +1,6 @@
+// import dbConnection from "dbconnection";
 import dbConnection from "../../data-layer/data.js";
+
 
 // QUERY-STRING + db.execute
 async function readCatalougeQuery() {
