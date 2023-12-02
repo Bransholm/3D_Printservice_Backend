@@ -39,9 +39,9 @@ async function readStockItemByIdQuery(id, request) {
 async function updateStockItemQuery(id, request) {
   const body = request.body;
   // Update query
-  const updateQuery =
-    "UPDATE catalogue SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrize=? WHERE id=?;";
-  const updateValues = [
+  const queryString =
+    "UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrize=? WHERE id=?;";
+  const values = [
     body.Name,
     body.Material,
     body.Colour,
@@ -52,7 +52,7 @@ async function updateStockItemQuery(id, request) {
   ];
 
   // Execute the update query within the transaction
-  const [result] = await dbConnection.query(updateQuery, updateValues);
+  const [result] = await dbConnection.query(queryString, values);
   return result;
 }
 

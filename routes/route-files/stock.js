@@ -68,7 +68,6 @@ stockRouter.put("/:id", async (request, response) => {
 
     try {
       result = await updateStockItemQuery(id, request);
-      console.log(result);
 
       // Commit the transaction if the update is successful
       await dbConnection.commit();

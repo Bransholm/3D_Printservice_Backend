@@ -9,7 +9,7 @@ function InternalServerErrorResponse(error, response) {
 function rowIdNotFoundResponse(id, response) {
   return response
     .status(404)
-    .json({ error: `The artist with the id ${id} does not exist` });
+    .json({ error: `The desried item with the id ${id} does not exist` });
 }
 
 function successFullDeleteResponse(id, response) {
