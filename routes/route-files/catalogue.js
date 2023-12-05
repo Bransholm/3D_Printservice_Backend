@@ -1,5 +1,6 @@
 import { Router, response } from "express";
 import dbConnection from "../../data-layer/data.js";
+import Debug from "debug";
 // import { request } from "http";
 // import { error } from "console";
 // import { Connection } from "mysql2/typings/mysql/lib/Connection.js";
@@ -108,5 +109,37 @@ catalogueRouter.delete("/:id", async (request, response) => {
     InternalServerErrorResponse(error, response);
   }
 });
+
+
+
+catalogueRouter.get("/search", async (request, response) => {
+  try {
+    const searchType = request.query.type;
+    const searchTerm = request.query.q;
+
+    let query = "";
+    let tableName = "";
+
+    if (searchType === "Category") {
+      query = "SELECT * from products WHERE Category LIKE ?";
+      // Da vi skal have en search for hvert table, kan vi så slette denne variabel "tableName"? - Lukas
+      tableName = "products";
+    } else {
+      return response.status(400).json({ error: "Invalid search type" });
+    }
+
+    const [rows] = await dbConnection.query(query, [`%${searchTerm}%`]);
+
+    // Der behøver ikke være et tablename fordi vi overholder REST?? - Lukas
+    response.json({ [tableName]: rows });
+  } catch (error) {
+    console.error("There was an error when attempting to search", error);
+    response.status(500).json({ error: "An error occurred while searching" });
+  }
+});
+
+
+
+
 
 export default catalogueRouter;
