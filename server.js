@@ -7,6 +7,7 @@ import catalogueRouter from "./routes/route-files/catalogue.js";
 import startRouter from "./start.js";
 import productRouter from "./routes/route-files/products.js";
 import stockRouter from "./routes/route-files/stock.js";
+import searchCatalogueRouter from "./routes/route-files/search-catalogue.js";
 
 const app = express();
 const port = process.env.PORT || 4811;
@@ -19,6 +20,7 @@ app.use("/start", startRouter);
 app.use("/catalogue", catalogueRouter);
 app.use("/stock", stockRouter);
 app.use("/product", productRouter);
+app.use("/searchCatalogue", searchCatalogueRouter);
 
 app.listen(port, () => {
   console.log(
