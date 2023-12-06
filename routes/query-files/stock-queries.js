@@ -7,7 +7,7 @@ async function readAllStockItemsQuery() {
   return result;
 }
 
-// Create catalog item
+// Create catalogue item
 async function createStockItemQuery(request) {
   const body = request.body;
   const queryString =
@@ -25,7 +25,7 @@ async function createStockItemQuery(request) {
   return result;
 }
 
-// Get catalog item by ID
+// Get catalogue item by ID
 async function readStockItemByIdQuery(id, request) {
   const queryString = "SELECT * FROM stock WHERE id = ?";
   const values = [id];
@@ -35,7 +35,7 @@ async function readStockItemByIdQuery(id, request) {
   return result;
 }
 
-// Update catalog item by ID
+// Update catalogue item by ID
 async function updateStockItemQuery(id, request) {
   const body = request.body;
   // Update query

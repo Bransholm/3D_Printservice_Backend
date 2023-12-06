@@ -9,7 +9,7 @@ async function readCatalougeQuery() {
   return result;
 }
 
-// Create catalog item
+// Create catalogue item
 async function createCatalogueItemQuery(request) {
   const body = request.body;
   const queryString =
@@ -27,7 +27,7 @@ async function createCatalogueItemQuery(request) {
   return result;
 }
 
-// Get catalog item by ID
+// Get catalogue item by ID
 async function readCatalogItemByIdQuery(id, request) {
   const queryString = "SELECT * FROM catalogue WHERE id = ?";
   const values = [id];
@@ -37,7 +37,7 @@ async function readCatalogItemByIdQuery(id, request) {
   return result;
 }
 
-// Update catalog item by ID
+// Update catalogue item by ID
 async function updateCatalogueQuery(id, request) {
   const body = request.body;
   // Update query
