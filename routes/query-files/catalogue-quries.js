@@ -45,12 +45,12 @@ async function updateCatalogueQuery(id, request) {
   const updateQuery =
     "UPDATE catalogue SET Title=?, StandardSize=?, StandardWeight=?, ItemDescription=?, ImageLink=?, Category=? WHERE id=?;";
   const updateValues = [
-    body.Title,
-    body.StandardSize,
-    body.StandardWeight,
-    body.ItemDescription,
-    body.ImageLink,
-    body.Category,
+    body.title,
+    body.standardSize,
+    body.standardWeight,
+    body.itemDescription,
+    body.imageLink,
+    body.category,
     id,
   ];
 

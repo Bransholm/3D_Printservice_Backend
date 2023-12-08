@@ -13,12 +13,12 @@ async function createStockItemQuery(request) {
   const queryString =
     "INSERT INTO stock (Name, Material, Colour, GramInStock, MinAmountReached, SalesPrize) VALUES (?, ?, ?, ?, ?, ?);";
   const values = [
-    body.Name,
-    body.Material,
-    body.Colour,
-    body.GramInStock,
-    body.MinAmountReached,
-    body.SalesPrize,
+    body.name,
+    body.material,
+    body.colour,
+    body.gramInStock,
+    body.minAmountReached,
+    body.salesPrize,
   ];
 
   const result = await dbConnection.execute(queryString, values);
@@ -42,12 +42,12 @@ async function updateStockItemQuery(id, request) {
   const queryString =
     "UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrize=? WHERE id=?;";
   const values = [
-    body.Name,
-    body.Material,
-    body.Colour,
-    body.GramInStock,
-    body.MinAmountReached,
-    body.SalesPrize,
+    body.name,
+    body.material,
+    body.colour,
+    body.gramInStock,
+    body.minAmountReached,
+    body.salesPrize,
     id,
   ];
 
