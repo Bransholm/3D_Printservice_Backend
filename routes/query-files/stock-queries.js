@@ -1,4 +1,4 @@
-import dbConnection from "../../data-layer/data.js";
+import dbConnection from "../../data-layer/data.js"
 
 // QUERY-STRING + db.execute
 async function readAllStockItemsQuery() {

@@ -1,5 +1,6 @@
 import { Router, response } from "express";
 import dbConnection from "../../data-layer/data.js";
+// import {cors} from "../server"
 import Debug from "debug";
 // import { request } from "http";
 // import { error } from "console";

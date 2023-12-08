@@ -1,6 +1,6 @@
 // import dbConnection from "dbconnection";
 import dbConnection from "../../data-layer/data.js";
-
+// import { cors } from "../server";
 
 // QUERY-STRING + db.execute
 async function readCatalougeQuery() {
@@ -11,16 +11,17 @@ async function readCatalougeQuery() {
 
 // Create catalogue item
 async function createCatalogueItemQuery(request) {
+  console.log("Query request: ", request.body);
   const body = request.body;
   const queryString =
     "INSERT INTO catalogue (Title, StandardSize, StandardWeight, ItemDescription, ImageLink, Category) VALUES (?, ?, ?, ?, ?, ?);";
   const values = [
-    body.Title,
-    body.StandardSize,
-    body.StandardWeight,
-    body.ItemDescription,
-    body.ImageLink,
-    body.Category,
+    body.title,
+    body.standardSize,
+    body.standardWeight,
+    body.itemDescription,
+    body.imageLink,
+    body.category,
   ];
 
   const result = await dbConnection.execute(queryString, values);
