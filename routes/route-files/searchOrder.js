@@ -44,3 +44,5 @@ searchOrderRouter.get("/", async (request, response) => {
 		response.status(500).json({ error: "An error occurred while searching" });
 	}
 });
+
+export default searchOrderRouter;

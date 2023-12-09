@@ -5,12 +5,12 @@ import cors from "cors";
 //Route imports goes here:
 import catalogueRouter from "./routes/route-files/catalogue.js";
 import startRouter from "./start.js";
-import productRouter from "./routes/route-files/products.js";
+// import productRouter from "./routes/route-files/products.js";
 import stockRouter from "./routes/route-files/stock.js";
 import avialableStockRouter from "./routes/route-files/available-stock.js";
 // Available ???? 42.
-import searchCatalogueRouter from "./routes/route-files/search-catalogue.js";
-import searchOrderRouter from "./routes/route-files/searchOrder.js";
+// import searchCatalogueRouter from "./routes/route-files/search-catalogue.js";
+// import searchOrderRouter from "./routes/route-files/searchOrder.js";
 
 
 const app = express();
@@ -24,9 +24,9 @@ app.use("/start", startRouter);
 app.use("/catalogue", catalogueRouter);
 app.use("/stock", stockRouter);
 app.use("/availableStock", avialableStockRouter);
-app.use("/product", productRouter);
-app.use("/search_Catalogue", searchCatalogueRouter);
-app.use("/search_Order", searchOrderRouter);
+// app.use("/product", productRouter);
+// app.use("/search_Catalogue", searchCatalogueRouter);
+// app.use("/search_Order", searchOrderRouter);
 // app.use(searchCatalogueRouter);424242424242424242424242
 
 app.listen(port, () => {
