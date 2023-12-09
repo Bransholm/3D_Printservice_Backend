@@ -28,7 +28,7 @@ const searchCatalogueRouter = Router();
 // 	}
 // });
 
-searchCatalogueRouter.get("/search", async (request, response) => {
+searchCatalogueRouter.get("/", async (request, response) => {
 	console.log("You are now searching");
 	try {
 		const searchType = request.query.type;

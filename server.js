@@ -21,7 +21,7 @@ app.use("/catalogue", catalogueRouter);
 app.use("/stock", stockRouter);
 app.use("/product", productRouter);
 app.use("/search", searchCatalogueRouter);
-app.use(searchCatalogueRouter);
+// app.use(searchCatalogueRouter);424242424242424242424242
 
 app.listen(port, () => {
 	console.log(
