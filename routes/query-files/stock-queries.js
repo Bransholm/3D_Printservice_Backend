@@ -1,4 +1,4 @@
-import dbConnection from "../../data-layer/data.js"
+import dbConnection from "../../data-layer/data.js";
 
 // QUERY-STRING + db.execute
 async function readAllStockItemsQuery() {
@@ -10,8 +10,8 @@ async function readAllStockItemsQuery() {
 // Create catalogue item
 async function createStockItemQuery(request) {
   const body = request.body;
-  const queryString =
-    "INSERT INTO stock (Name, Material, Colour, GramInStock, MinAmountReached, SalesPrize) VALUES (?, ?, ?, ?, ?, ?);";
+  const queryString = /*sql*/
+    `INSERT INTO stock (Name, Material, Colour, GramInStock, MinAmountReached, SalesPrize) VALUES (?, ?, ?, ?, ?, ?);`;
   const values = [
     body.name,
     body.material,
@@ -27,7 +27,7 @@ async function createStockItemQuery(request) {
 
 // Get catalogue item by ID
 async function readStockItemByIdQuery(id, request) {
-  const queryString = "SELECT * FROM stock WHERE id = ?";
+  const queryString =/*sql*/ `SELECT * FROM stock WHERE id = ?`;
   const values = [id];
 
   const [result] = await dbConnection.execute(queryString, values);
@@ -39,8 +39,8 @@ async function readStockItemByIdQuery(id, request) {
 async function updateStockItemQuery(id, request) {
   const body = request.body;
   // Update query
-  const queryString =
-    "UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrize=? WHERE id=?;";
+  const queryString =/*sql*/
+    `UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrize=? WHERE id=?`;
   const values = [
     body.name,
     body.material,
@@ -60,10 +60,20 @@ async function updateStockItemQuery(id, request) {
 async function deleteStockItemByIdQuery(id, request) {
   const values = [id];
   // Delete the given item from the catalogue
-  const queryString = "DELETE FROM stock WHERE id=?";
+  const queryString = /*sql*/`DELETE FROM stock WHERE id=?;`;
   const [result] = await dbConnection.query(queryString, values);
   return result;
 }
+
+//Reads asll Materials (where stock minAmountReached is FALSE)
+
+async function readAvailavleStockItemsQuery() {
+  const queryString = /*sql*/ `SELECT * FROM stock WHERE MinAmountReached=0;`;
+  const [result] = await dbConnection.execute(queryString);
+  return result;
+}
+
+
 
 export {
   readAllStockItemsQuery,
@@ -71,4 +81,5 @@ export {
   readStockItemByIdQuery,
   updateStockItemQuery,
   deleteStockItemByIdQuery,
+  readAvailavleStockItemsQuery
 };

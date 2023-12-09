@@ -7,6 +7,7 @@ import catalogueRouter from "./routes/route-files/catalogue.js";
 import startRouter from "./start.js";
 import productRouter from "./routes/route-files/products.js";
 import stockRouter from "./routes/route-files/stock.js";
+import avialableStockRouter from "./routes/route-files/available-stock.js";
 import searchCatalogueRouter from "./routes/route-files/search-catalogue.js";
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(cors());
 app.use("/start", startRouter);
 app.use("/catalogue", catalogueRouter);
 app.use("/stock", stockRouter);
+app.use("/availableStock", avialableStockRouter);
 app.use("/product", productRouter);
 app.use("/search", searchCatalogueRouter);
 // app.use(searchCatalogueRouter);424242424242424242424242
