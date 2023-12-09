@@ -29,7 +29,7 @@ const searchCatalogueRouter = Router();
 // });
 
 searchCatalogueRouter.get("/", async (request, response) => {
-	console.log("You are now searching");
+	console.log("You are now searching C");
 	try {
 		const searchType = request.query.type;
 		const searchTerm = request.query.q;
@@ -42,7 +42,7 @@ searchCatalogueRouter.get("/", async (request, response) => {
 			tableName = "catalogue";
 		} else if (searchType === "Category") {
 			query = "SELECT * from catalogue WHERE Category LIKE ?";
-			tableName = "catelogue";
+			tableName = "catalogue";
 		} else {
 			return response.status(400).json({ error: "Invalid search type" });
 		}

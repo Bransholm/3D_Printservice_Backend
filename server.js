@@ -10,6 +10,8 @@ import stockRouter from "./routes/route-files/stock.js";
 import avialableStockRouter from "./routes/route-files/available-stock.js";
 // Available ???? 42.
 import searchCatalogueRouter from "./routes/route-files/search-catalogue.js";
+import searchOrderRouter from "./routes/route-files/searchOrder.js";
+
 
 const app = express();
 const port = process.env.PORT || 4811;
@@ -23,7 +25,8 @@ app.use("/catalogue", catalogueRouter);
 app.use("/stock", stockRouter);
 app.use("/availableStock", avialableStockRouter);
 app.use("/product", productRouter);
-app.use("/search", searchCatalogueRouter);
+app.use("/search_Catalogue", searchCatalogueRouter);
+app.use("/search_Order", searchOrderRouter);
 // app.use(searchCatalogueRouter);424242424242424242424242
 
 app.listen(port, () => {
