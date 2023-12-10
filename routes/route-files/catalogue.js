@@ -25,9 +25,6 @@ import {
 const catalogueRouter = Router();
 
 
-
-
-
 // CREATE all catalogue Items
 catalogueRouter.post("/", async (request, response) => {
   try {
@@ -39,16 +36,31 @@ catalogueRouter.post("/", async (request, response) => {
 });
 
 
-// Reads the catalogue data
+// // Reads the catalogue data
+// catalogueRouter.get("/", async (request, response) => {
+//   try {
+//     const result = await readCatalougeQuery();
+//     response.json(result);
+//   } catch (error) {
+//     InternalServerErrorResponse(error, response);
+//   }
+// });
+
+	
 catalogueRouter.get("/", async (request, response) => {
   try {
-    const result = await readCatalougeQuery();
+    const searchType = request.query.type;
+    const searchTerm = request.query.q;
+    const queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${searchType}';`;
+    const [result] = await dbConnection.execute(queryString);
     response.json(result);
   } catch (error) {
-    InternalServerErrorResponse(error, response);
+    console.error(error);
+    response
+      .status(500)
+      .json({ message: "An Internal Server Error Has Occured" });
   }
 });
-
 
 // Get catalogue item by ID
 catalogueRouter.get("/:id", async (request, response) => {
