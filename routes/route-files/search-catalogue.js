@@ -28,13 +28,14 @@ const searchCatalogueRouter = Router();
 // 	}
 // });
 
-
 searchCatalogueRouter.get("/", async (request, response) => {
-	console.log("You are now searching C");
+	console.log("You are now searching Category search");
 	try {
 		const searchType = request.query.type;
 		const searchTerm = request.query.q;
 
+		// Initialize selectedCategory with a default value
+		let selectedCategory = "";
 		let query = "";
 		let tableName = "";
 
@@ -42,13 +43,15 @@ searchCatalogueRouter.get("/", async (request, response) => {
 			query = "SELECT * from catalogue WHERE Title LIKE ?";
 			tableName = "catalogue";
 		} else if (searchType === "Category") {
-			const selectedCategory = request.query.category; // Get the selected category
-			if (!selectedCategory) {
-				return response
-					.status(400)
-					.json({ error: "Category parameter is required" });
+			selectedCategory = request.query.category;
+
+			// Validate the selected category
+			const validCategories = ["Dyr", "Bygninger", "Sci-fi", "Eventyr"];
+			if (!selectedCategory || !validCategories.includes(selectedCategory)) {
+				return response.status(400).json({ error: "Invalid category value" });
 			}
-			query = "SELECT * from catalogue WHERE Category = ?";
+
+			query = "SELECT * from catalogue WHERE Category = ? AND Title LIKE ?";
 			tableName = "catalogue";
 		} else {
 			return response.status(400).json({ error: "Invalid search type" });
@@ -56,12 +59,16 @@ searchCatalogueRouter.get("/", async (request, response) => {
 
 		const [rows] = await dbConnection.query(
 			query,
-			searchType === "Category" ? [selectedCategory] : [`%${searchTerm}%`]
+			searchType === "Category"
+				? [selectedCategory, `%${searchTerm}%`]
+				: [`%${searchTerm}%`]
 		);
 		response.json({ [tableName]: rows });
 	} catch (error) {
 		console.error("There was an error when attempting to search", error);
-		response.status(500).json({ error: "An error occurred while searching" });
+		response
+			.status(500)
+			.json({ error: `An error occurred while searching: ${error.message}` });
 	}
 });
 
@@ -92,8 +99,6 @@ searchCatalogueRouter.get("/", async (request, response) => {
 // 		response.status(500).json({ error: "An error occurred while searching" });
 // 	}
 // });
-
-
 
 // searchCatalogueRouter.get("/", async (request, response) => {
 // 	console.log("You are now searching");
