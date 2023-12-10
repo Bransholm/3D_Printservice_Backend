@@ -28,6 +28,7 @@ const searchCatalogueRouter = Router();
 // 	}
 // });
 
+
 searchCatalogueRouter.get("/", async (request, response) => {
 	console.log("You are now searching C");
 	try {
@@ -41,19 +42,58 @@ searchCatalogueRouter.get("/", async (request, response) => {
 			query = "SELECT * from catalogue WHERE Title LIKE ?";
 			tableName = "catalogue";
 		} else if (searchType === "Category") {
-			query = "SELECT * from catalogue WHERE Category LIKE ?";
+			const selectedCategory = request.query.category; // Get the selected category
+			if (!selectedCategory) {
+				return response
+					.status(400)
+					.json({ error: "Category parameter is required" });
+			}
+			query = "SELECT * from catalogue WHERE Category = ?";
 			tableName = "catalogue";
 		} else {
 			return response.status(400).json({ error: "Invalid search type" });
 		}
 
-		const [rows] = await dbConnection.query(query, [`%${searchTerm}%`]);
+		const [rows] = await dbConnection.query(
+			query,
+			searchType === "Category" ? [selectedCategory] : [`%${searchTerm}%`]
+		);
 		response.json({ [tableName]: rows });
 	} catch (error) {
 		console.error("There was an error when attempting to search", error);
 		response.status(500).json({ error: "An error occurred while searching" });
 	}
 });
+
+// searchCatalogueRouter.get("/", async (request, response) => {
+// 	console.log("You are now searching C");
+// 	try {
+// 		const searchType = request.query.type;
+// 		const searchTerm = request.query.q;
+
+// 		let query = "";
+// 		let tableName = "";
+
+// 		if (searchType === "Title") {
+// 			query = "SELECT * from catalogue WHERE Title LIKE ?";
+// 			tableName = "catalogue";
+// 		} else if (searchType === "Category") {
+// 			query =
+// 				"SELECT * from catalogue WHERE Category IN ('Dyr', 'Sci-fi', 'Bygninger', 'Eventyr')";
+// 			tableName = "catalogue";
+// 		} else {
+// 			return response.status(400).json({ error: "Invalid search type" });
+// 		}
+
+// 		const [rows] = await dbConnection.query(query, [`%${searchTerm}%`]);
+// 		response.json({ [tableName]: rows });
+// 	} catch (error) {
+// 		console.error("There was an error when attempting to search", error);
+// 		response.status(500).json({ error: "An error occurred while searching" });
+// 	}
+// });
+
+
 
 // searchCatalogueRouter.get("/", async (request, response) => {
 // 	console.log("You are now searching");
