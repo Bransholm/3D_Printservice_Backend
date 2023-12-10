@@ -24,7 +24,7 @@ app.use("/start", startRouter);
 app.use("/catalogue", catalogueRouter);
 app.use("/stock", stockRouter);
 app.use("/availableStock", avialableStockRouter);
-app.use("/product", productRouter);
+// app.use("/product", productRouter);
 app.use("/search_Catalogue", searchCatalogueRouter);
 // app.use("/search_Order", searchOrderRouter);
 // app.use(searchCatalogueRouter);424242424242424242424242
