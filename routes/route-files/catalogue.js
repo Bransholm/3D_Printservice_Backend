@@ -46,18 +46,12 @@ catalogueRouter.post("/", async (request, response) => {
 //   }
 // });
 
-	
+// Get Catalogue router that works with filter and search
 catalogueRouter.get("/", async (request, response) => {
   try {
     const filter = request.query.filter;
     const search = request.query.search;
     let queryString = "";
-    // const queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${filter}' AND Title LIKE '%${search}%';`;
-
-    // if (filter == "all") {
-    //   queryString = /*sql*/ `SELECT * FROM catalogue where Title LIKE '%${search}%';`;
-    // }
-
 
     if (filter === "all") {
       if (search === "") {
@@ -92,15 +86,6 @@ catalogueRouter.get("/", async (request, response) => {
     } else {
       queryString = /*sql*/ `SELECT * FROM catalogue;`;
     }
-
-
-
-
-
-
-    // if (search) {
-    //   queryString += ` AND Title LIKE '%${search}%'`;
-    // }
 
     const [result] = await dbConnection.execute(queryString);
     response.json(result);
