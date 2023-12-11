@@ -25,9 +25,6 @@ import {
 const catalogueRouter = Router();
 
 
-
-
-
 // CREATE all catalogue Items
 catalogueRouter.post("/", async (request, response) => {
   try {
@@ -39,16 +36,66 @@ catalogueRouter.post("/", async (request, response) => {
 });
 
 
-// Reads the catalogue data
+// // Reads the catalogue data
+// catalogueRouter.get("/", async (request, response) => {
+//   try {
+//     const result = await readCatalougeQuery();
+//     response.json(result);
+//   } catch (error) {
+//     InternalServerErrorResponse(error, response);
+//   }
+// });
+
+// Get Catalogue router that works with filter and search
 catalogueRouter.get("/", async (request, response) => {
   try {
-    const result = await readCatalougeQuery();
+    const filter = request.query.filter;
+    const search = request.query.search;
+    let queryString = "";
+
+    if (filter === "all") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue;`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Title LIKE '%${search}%';`;
+      }
+    } else if (filter === "Bygninger") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Bygninger";`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Bygninger" AND Title LIKE '%${search}%';`;
+      }
+    } else if (filter === "Dyr") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Dyr";`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Dyr" AND Title LIKE '%${search}%';`;
+      }
+    } else if (filter === "Eventyr") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Eventyr";`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Eventyr" AND Title LIKE '%${search}%';`;
+      }
+    } else if (filter === "Sci-fi") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi";`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi" AND Title LIKE '%${search}%';`;
+      }
+    } else {
+      queryString = /*sql*/ `SELECT * FROM catalogue;`;
+    }
+
+    const [result] = await dbConnection.execute(queryString);
     response.json(result);
   } catch (error) {
-    InternalServerErrorResponse(error, response);
+    console.error(error);
+    response
+      .status(500)
+      .json({ message: "An Internal Server Error Has Occured" });
   }
 });
-
 
 // Get catalogue item by ID
 catalogueRouter.get("/:id", async (request, response) => {
