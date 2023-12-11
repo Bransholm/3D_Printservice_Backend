@@ -49,9 +49,10 @@ catalogueRouter.post("/", async (request, response) => {
 	
 catalogueRouter.get("/", async (request, response) => {
   try {
-    const searchType = request.query.type;
-    const searchTerm = request.query.q;
-    const queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${searchType}';`;
+    const filter = request.query.filter;
+    const search = request.query.search;
+    const queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${search}';`;
+    
     const [result] = await dbConnection.execute(queryString);
     response.json(result);
   } catch (error) {
