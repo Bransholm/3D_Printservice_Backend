@@ -90,7 +90,7 @@ catalogueRouter.get("/", async (request, response) => {
     const [result] = await dbConnection.execute(queryString);
     
     if (result.length === 0) {
-      response.status(404).send("Beklager, ingen produkter matcher din søgning...");
+      response.status(404).json({ message: "Beklager, ingen produkter matcher din søgning..." });
     } else {
       response.json(result);
     }
