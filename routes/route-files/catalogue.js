@@ -88,7 +88,14 @@ catalogueRouter.get("/", async (request, response) => {
     }
 
     const [result] = await dbConnection.execute(queryString);
-    response.json(result);
+    
+    if (result.length === 0) {
+      response.status(404).send("Beklager, ingen produkter matcher din søgning...");
+    } else {
+      response.json(result);
+    }
+    
+    // response.json(result);
   } catch (error) {
     console.error(error);
     response
