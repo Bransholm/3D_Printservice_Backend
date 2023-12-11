@@ -51,8 +51,54 @@ catalogueRouter.get("/", async (request, response) => {
   try {
     const filter = request.query.filter;
     const search = request.query.search;
-    const queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${search}';`;
-    
+    let queryString = "";
+    // const queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${filter}' AND Title LIKE '%${search}%';`;
+
+    // if (filter == "all") {
+    //   queryString = /*sql*/ `SELECT * FROM catalogue where Title LIKE '%${search}%';`;
+    // }
+
+
+    if (filter === "all") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue;`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Title LIKE '%${search}%';`;
+      }
+    } else if (filter === "Bygninger") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Bygninger";`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Bygninger" AND Title LIKE '%${search}%';`;
+      }
+    } else if (filter === "Dyr") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Dyr";`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Dyr" AND Title LIKE '%${search}%';`;
+      }
+    } else if (filter === "Eventyr") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Eventyr";`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Eventyr" AND Title LIKE '%${search}%';`;
+      }
+    } else if (filter === "Sci-fi") {
+      if (search === "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi";`;
+      } else if (search !== "") {
+        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi" AND Title LIKE '%${search}%';`;
+      }
+
+
+
+
+
+
+    // if (search) {
+    //   queryString += ` AND Title LIKE '%${search}%'`;
+    // }
+
     const [result] = await dbConnection.execute(queryString);
     response.json(result);
   } catch (error) {
