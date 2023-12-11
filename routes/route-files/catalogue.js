@@ -89,6 +89,7 @@ catalogueRouter.get("/", async (request, response) => {
       } else if (search !== "") {
         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi" AND Title LIKE '%${search}%';`;
       }
+    }
 
 
 
