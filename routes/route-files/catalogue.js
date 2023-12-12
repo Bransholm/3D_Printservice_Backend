@@ -36,15 +36,6 @@ catalogueRouter.post("/", async (request, response) => {
 });
 
 
-// // Reads the catalogue data
-// catalogueRouter.get("/", async (request, response) => {
-//   try {
-//     const result = await readCatalougeQuery();
-//     response.json(result);
-//   } catch (error) {
-//     InternalServerErrorResponse(error, response);
-//   }
-// });
 
 // Get Catalogue router that works with filter and search
 catalogueRouter.get("/", async (request, response) => {
