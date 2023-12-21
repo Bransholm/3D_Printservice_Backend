@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 
 //The routes goes here:
-app.use("/start", startRouter);
+app.use("/", startRouter);
 app.use("/catalogue", catalogueRouter);
 app.use("/stock", stockRouter);
 app.use("/availableStock", avialableStockRouter);
