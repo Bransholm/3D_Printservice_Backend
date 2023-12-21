@@ -4,7 +4,7 @@ import cors from "cors";
 
 //Route imports goes here:
 import catalogueRouter from "./routes/route-files/catalogue.js";
-import startRouter from "./start.js";
+import startRouter from "./routes/route-files/start.js";
 // import productRouter from "./routes/route-files/products.js";
 import stockRouter from "./routes/route-files/stock.js";
 import avialableStockRouter from "./routes/route-files/available-stock.js";
