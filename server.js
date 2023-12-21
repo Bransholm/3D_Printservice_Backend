@@ -7,10 +7,8 @@ import catalogueRouter from "./routes/route-files/catalogue.js";
 import startRouter from "./routes/route-files/start.js";
 // import productRouter from "./routes/route-files/products.js";
 import stockRouter from "./routes/route-files/stock.js";
-import avialableStockRouter from "./routes/route-files/available-stock.js";
-// Available ???? 42.
-import searchCatalogueRouter from "./routes/route-files/search-catalogue.js";
-// import searchOrderRouter from "./routes/route-files/searchOrder.js";
+import availableStockRouter from "./routes/route-files/available-stock.js";
+// available ???? 42.
 
 const app = express();
 const port = process.env.PORT || 4811;
@@ -22,11 +20,7 @@ app.use(cors());
 app.use("/", startRouter);
 app.use("/catalogue", catalogueRouter);
 app.use("/stock", stockRouter);
-app.use("/availableStock", avialableStockRouter);
-// app.use("/product", productRouter);
-app.use("/search_Catalogue", searchCatalogueRouter);
-// app.use("/search_Order", searchOrderRouter);
-// app.use(searchCatalogueRouter);424242424242424242424242
+app.use("/availableStock", availableStockRouter);
 
 app.listen(port, () => {
 	console.log(
@@ -34,4 +28,3 @@ app.listen(port, () => {
 	);
 });
 
-//Test comment for Auto GitHub deployment 4

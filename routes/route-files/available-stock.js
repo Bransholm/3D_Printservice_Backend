@@ -6,10 +6,10 @@ import { InternalServerErrorResponse } from "../router-error-handling/router-err
 
 import { readAvailavleStockItemsQuery } from "../query-files/stock-queries.js";
 
-const avialableStockRouter = Router();
+const availableStockRouter = Router();
 
 // Reads the catalogue data
-avialableStockRouter.get("/", async (request, response) => {
+availableStockRouter.get("/", async (request, response) => {
   try {
     const result = await readAvailavleStockItemsQuery();
     response.json(result);
@@ -17,4 +17,4 @@ avialableStockRouter.get("/", async (request, response) => {
     InternalServerErrorResponse(error, response);
   }
 });
-export default avialableStockRouter;
+export default availableStockRouter;
