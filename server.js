@@ -5,10 +5,8 @@ import cors from "cors";
 //Route imports goes here:
 import catalogueRouter from "./routes/route-files/catalogue.js";
 import startRouter from "./routes/route-files/start.js";
-// import productRouter from "./routes/route-files/products.js";
 import stockRouter from "./routes/route-files/stock.js";
 import availableStockRouter from "./routes/route-files/available-stock.js";
-// available ???? 42.
 
 const app = express();
 const port = process.env.PORT || 4811;
