@@ -11,14 +11,14 @@ async function readAllStockItemsQuery() {
 async function createStockItemQuery(request) {
   const body = request.body;
   const queryString = /*sql*/
-    `INSERT INTO stock (Name, Material, Colour, GramInStock, MinAmountReached, SalesPrize) VALUES (?, ?, ?, ?, ?, ?);`;
+    `INSERT INTO stock (Name, Material, Colour, GramInStock, MinAmountReached, SalesPrice) VALUES (?, ?, ?, ?, ?, ?);`;
   const values = [
     body.name,
     body.material,
     body.colour,
     body.gramInStock,
     body.minAmountReached,
-    body.salesPrize,
+    body.salesPrice,
   ];
 
   const result = await dbConnection.execute(queryString, values);
@@ -35,19 +35,21 @@ async function readStockItemByIdQuery(id, request) {
   return result;
 }
 
+
+
 // Update catalogue item by ID
 async function updateStockItemQuery(id, request) {
   const body = request.body;
   // Update query
   const queryString =/*sql*/
-    `UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrize=? WHERE id=?`;
+    `UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrice=? WHERE Id=?`;
   const values = [
     body.name,
     body.material,
     body.colour,
     body.gramInStock,
     body.minAmountReached,
-    body.salesPrize,
+    body.salesPrice,
     id,
   ];
 

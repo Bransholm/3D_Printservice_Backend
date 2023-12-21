@@ -60,6 +60,7 @@ stockRouter.get("/:id", async (request, response) => {
 // UPDATE specific catalogue itme
 stockRouter.put("/:id", async (request, response) => {
   const id = request.params.id;
+  console.log("put route id: ", id)
 
   let result;
   try {
