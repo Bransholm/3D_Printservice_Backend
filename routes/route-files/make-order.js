@@ -7,6 +7,44 @@ import { InternalServerErrorResponse } from "../router-error-handling/router-err
 import { readAllStockItemsQuery } from "../query-files/stock-queries.js";
 const connection = dbConnection;
 
+const order = {
+  CustomerInfo: {
+    firstName: "Mikkel",
+    lastName: "Mikkelsen",
+    adress: "Bådhavnsvej 3",
+    zipCode: 3390,
+    city: "Hundested",
+    email: "LL431@gmail.com",
+  },
+  OdrderInfo: {
+    status: "ordered",
+    deliveryAdress: "Bådhavnsvej 3",
+    deliveryZipCode: 3390,
+    deliveryCity: "Hundested",
+    totalTax: 260.0,
+    totalPrice: 640.0,
+    shippingPrice: 40.0,
+  },
+  Order_Lines: [
+    {
+      catalogue_ID: 1,
+      amount: 3,
+      productSize: 2,
+      itemPrice: 400.0,
+      itemTax: 45.0,
+      stock_ID: 3,
+    },
+    {
+      catalogue_ID: 12,
+      amount: 1,
+      productSize: 10,
+      itemPrice: 100.0,
+      itemTax: 22.0,
+      stock_ID: 12,
+    },
+  ],
+};
+
 // Reads the catalogue data
 makeOrderRouter.get("/", async (request, response) => {
   try {
@@ -18,7 +56,6 @@ makeOrderRouter.get("/", async (request, response) => {
 });
 
 makeOrderRouter.post("/", async (request, response) => {
-  let result;
   //response.json(result);
 
   await connection.beginTransaction();
@@ -31,47 +68,38 @@ makeOrderRouter.post("/", async (request, response) => {
     //SQL - make the Customer + Order
     // LOOP on all product-lines...
 
-
     const [customerResult] = await createCustomer(customer);
     const customerId = customerResult.insertId;
-   
-    if(!customerResult){
+
+    if (!customerResult) {
       console.error(error);
       response
         .status(500)
-        .json({ message: "An Internal Server Error Has Occured - customerResult" }); 
-     }else {
-      response.json(customerResult);
-    const [orderResult] = await createOrder(order, customerId);
-    const orderId = orderResult.insertId;
-    if(!orderResult){
-       console.error(error);
-      response
-        .status(500)
-        .json({ message: "An Internal Server Error Has Occured - orderResult" }); 
- 
-   } else {
-      response.json(orderResult);
-      for (const product of products) {
-        const [productResult] = await createOrderLine(product, orderId);
-            if(!productResult){
-               console.error(error);
-              response.status(500).json({ message: "An Internal Server Error Has Occured - productResult" }); 
-            } else {
-              response.json(product);
-            }
+        .json({
+          message: "An Internal Server Error Has Occured - customerResult",
+        });
+    } else {
+      // response.json(customerResult);
+      const [orderResult] = await createOrder(order, customerId);
+      const orderId = orderResult.insertId;
+      if (!orderResult) {
+        console.error(error);
+        response.status(500).json({
+          message: "An Internal Server Error Has Occured - orderResult",
+        });
+      } else {
+        // response.json(orderResult);
+        for (const product of products) {
+          const [productResult] = await createOrderLine(product, orderId);
+          if (!productResult) {
+            console.error(error);
+            response.status(500).json({message: "An Internal Server Error Has Occured - productResult",});
           }
-   }
-    await connection.commit();
-    // if (!orderResult || !customerResult ) {
-    //   console.error(error);
-    //   response
-    //     .status(500)
-    //     .json({ message: "An Internal Server Error Has Occured" });
-    // } else {
-    //   response.json(result);
-    // }1
-     }
+        }
+      }
+      await connection.commit();
+            response.json({ message: " An oder has sucessfully ben created" });
+    }
   } catch (error) {
     console.error(error);
 
