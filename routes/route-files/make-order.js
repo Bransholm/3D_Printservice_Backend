@@ -14,36 +14,77 @@ const order = {
     adress: "Bådhavnsvej 3",
     zipCode: 3390,
     city: "Hundested",
-    email: "LL431@gmail.com",
+    email: "LL431@gmail.com"
   },
   OdrderInfo: {
     status: "ordered",
     deliveryAdress: "Bådhavnsvej 3",
     deliveryZipCode: 3390,
     deliveryCity: "Hundested",
-    totalTax: 260.0,
-    totalPrice: 640.0,
-    shippingPrice: 40.0,
+    totalTax: 260.00,
+    totalPrice: 640.00,
+    shippingPrice: 40.00
   },
   Order_Lines: [
     {
       catalogue_ID: 1,
       amount: 3,
       productSize: 2,
-      itemPrice: 400.0,
-      itemTax: 45.0,
-      stock_ID: 3,
+      itemPrice: 400.00,
+      itemTax: 45.00,
+      stock_ID: 3
     },
     {
       catalogue_ID: 12,
       amount: 1,
       productSize: 10,
-      itemPrice: 100.0,
-      itemTax: 22.0,
-      stock_ID: 12,
+      itemPrice: 100.00,
+      itemTax: 22.00,
+      stock_ID: 12
+    }
+  ]
+};
+
+const orderJSON = {
+  "CustomerInfo": {
+    "firstName": "Mikkel",
+    "lastName": "Mikkelsen",
+    "adress": "Bådhavnsvej 3",
+    "zipCode": 3390,
+    "city": "Hundested",
+    "email": "LL431@gmail.com",
+  },
+  "OdrderInfo": {
+    "status": "ordered",
+    "deliveryAdress": "Bådhavnsvej 3",
+    "deliveryZipCode": 3390,
+    "deliveryCity": "Hundested",
+    "totalTax": 260.0,
+    "totalPrice": 640.0,
+    "shippingPrice": 40.0,
+  },
+  "Order_Lines": [
+    {
+      "catalogue_ID": 1,
+      "amount": 3,
+      "productSize": 2,
+      "itemPrice": 400.0,
+      "itemTax": 45.0,
+      "stock_ID": 3,
+    },
+    {
+      "catalogue_ID": 12,
+      "amount": 1,
+      "productSize": 10,
+      "itemPrice": 100.0,
+      "itemTax": 22.0,
+      "stock_ID": 12,
     },
   ],
 };
+
+
+
 
 // Reads the catalogue data
 makeOrderRouter.get("/", async (request, response) => {
@@ -94,6 +135,7 @@ makeOrderRouter.post("/", async (request, response) => {
           if (!productResult) {
             console.error(error);
             response.status(500).json({message: "An Internal Server Error Has Occured - productResult",});
+            break;
           }
         }
       }
