@@ -15,7 +15,6 @@ import {
   readAllStockItemsQuery,
   createStockItemQuery,
   readStockItemByIdQuery,
-  updateStockItemQuery,
   deleteStockItemByIdQuery,
 } from "../query-files/stock-queries.js";
 
@@ -56,6 +55,29 @@ stockRouter.get("/:id", async (request, response) => {
     InternalServerErrorResponse(error, response);
   }
 });
+
+
+async function updateStockItemQuery(id, request) {
+  const body = request.body;
+  // Update query
+  const queryString =
+    /*sql*/
+    `UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, Active=?, SalesPrice=? WHERE Id=?`;
+  const values = [
+    body.name,
+    body.material,
+    body.colour,
+    body.gramInStock,
+    body.active,
+    body.salesPrice,
+    id,
+  ];
+
+  // Execute the update query within the transaction
+  const [result] = await dbConnection.query(queryString, values);
+  return result;
+}
+
 
 // UPDATE specific catalogue itme
 stockRouter.put("/:id", async (request, response) => {

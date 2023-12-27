@@ -39,23 +39,23 @@ async function readStockItemByIdQuery(id, request) {
 
 // Update catalogue item by ID
 async function updateStockItemQuery(id, request) {
-  const body = request.body;
-  // Update query
-  const queryString =/*sql*/
-    `UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrice=? WHERE Id=?`;
-  const values = [
-    body.name,
-    body.material,
-    body.colour,
-    body.gramInStock,
-    body.minAmountReached,
-    body.salesPrice,
-    id,
-  ];
+//   const body = request.body;
+//   // Update query
+//   const queryString =/*sql*/
+//     `UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, MinAmountReached=?, SalesPrice=? WHERE Id=?`;
+//   const values = [
+//     body.name,
+//     body.material,
+//     body.colour,
+//     body.gramInStock,
+//     body.minAmountReached,
+//     body.salesPrice,
+//     id,
+//   ];
 
-  // Execute the update query within the transaction
-  const [result] = await dbConnection.query(queryString, values);
-  return result;
+//   // Execute the update query within the transaction
+//   const [result] = await dbConnection.query(queryString, values);
+//   return result;
 }
 
 // Delete catalogue item by ID
