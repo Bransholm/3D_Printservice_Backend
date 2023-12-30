@@ -68,7 +68,7 @@ async function deleteStockItemByIdQuery(id, request) {
 //Reads asll Materials (where stock minAmountReached is FALSE)
 
 async function readAvailavleStockItemsQuery() {
-  const queryString = /*sql*/ `SELECT * FROM stock WHERE Active=0;`;
+  const queryString = /*sql*/ `SELECT * FROM stock WHERE Active=1;`;
   const [result] = await dbConnection.execute(queryString);
   return result;
 }
