@@ -5,10 +5,14 @@ const viewOrdrerRouter = Router();
 
 //Get router for view orders
 viewOrdrerRouter.get("/", async (request, response) => {
-  try {
+    try {
+      //const ordrer = request.query.ordrer;
+      const email = request.query.email;
+        console.log(email);
+        console.log(typeof email);
       const queryString =
         /*sql*/
-    `
+        `
         SELECT
         order_lines.Id AS order_lines_Id,
         order_lines.Orders_ID AS order_lines_Orders_ID,
@@ -42,7 +46,7 @@ viewOrdrerRouter.get("/", async (request, response) => {
         JOIN customers ON orders.customer_ID = customers.Id
         JOIN catalogue ON order_lines.Catalogue_ID = catalogue.Id
         JOIN stock ON  order_lines.Stock_ID = stock.Id
-        WHERE order_lines.Orders_ID = 34 AND  customers.Email = 'kenneth@bransholm.dk';
+        WHERE order_lines.Orders_ID = 34 AND  customers.Email = '${email}';
     `;
     const [result] = await dbConnection.execute(queryString);
     response.json(result);
