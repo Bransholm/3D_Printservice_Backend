@@ -1,7 +1,7 @@
 import { Router, response } from "express";
 import dbConnection from "../../data-layer/data.js";
 
-const customersRouter = Router();
+const viewOrdrerRouter = Router();
 
 //Get router for view orders
 viewOrdrerRouter.get("/", async (request, response) => {
@@ -20,3 +20,5 @@ viewOrdrerRouter.get("/", async (request, response) => {
       .json({ message: "An Internal Server Error Has Occured" });
   }
 });
+
+export default viewOrdrerRouter;
