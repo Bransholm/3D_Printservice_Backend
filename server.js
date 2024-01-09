@@ -8,7 +8,7 @@ import startRouter from "./routes/route-files/start.js";
 import stockRouter from "./routes/route-files/stock.js";
 import availableStockRouter from "./routes/route-files/available-stock.js";
 import makeOrderRouter from "./routes/route-files/make-order.js";
-import customerRouter from "./routes/route-files/customer.js";
+import customersRouter from "./routes/route-files/customer.js";
 
 const app = express();
 const port = process.env.PORT || 4811;
@@ -19,7 +19,7 @@ app.use(cors());
 //The routes goes here:
 app.use("/", startRouter);
 app.use("/catalogue", catalogueRouter);
-app.use("/cusomter", customerRouter);
+app.use("/customers", customersRouter);
 app.use("/stock", stockRouter);
 app.use("/availableStock", availableStockRouter);
 app.use("/makeOrder", makeOrderRouter);
