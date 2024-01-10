@@ -9,6 +9,7 @@ import stockRouter from "./routes/route-files/stock.js";
 import availableStockRouter from "./routes/route-files/available-stock.js";
 import makeOrderRouter from "./routes/route-files/make-order.js";
 import customersRouter from "./routes/route-files/customer.js";
+import makeOrderExistingCustomerRouter from "./routes/route-files/make-order-existing-customer.js";
 
 const app = express();
 const port = process.env.PORT || 4811;
@@ -23,6 +24,7 @@ app.use("/customers", customersRouter);
 app.use("/stock", stockRouter);
 app.use("/availableStock", availableStockRouter);
 app.use("/makeOrder", makeOrderRouter);
+app.use("/makeOrderExistingCustomer", makeOrderExistingCustomerRouter);
 
 app.listen(port, () => {
   console.log(
