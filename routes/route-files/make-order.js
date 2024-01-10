@@ -47,6 +47,7 @@ const order = {
 
 const orderJSON ={
   "CustomerInfo": {
+    "id": 27,
     "firstName": "Jovan",
     "lastName": "Pasovski",
     "adress": "Molen 81",
@@ -65,7 +66,7 @@ const orderJSON ={
   },
   "Order_Lines": [
     {
-      "catalogue_ID": 11,
+      "catalogue_ID": 5,
       "amount": 3,
       "productSize": 2,
       "itemPrice": 400.0,
@@ -73,11 +74,19 @@ const orderJSON ={
       "stock_ID": 3
     },
     {
-      "catalogue_ID": 14,
-      "amount": 1,
+      "catalogue_ID": 28,
+      "amount": 5,
+      "productSize": 4,
+      "itemPrice": 300.0,
+      "itemTax": 66.0,
+      "stock_ID": 12
+    },   
+    {
+      "catalogue_ID": 33,
+      "amount": 2,
       "productSize": 10,
-      "itemPrice": 100.0,
-      "itemTax": 22.0,
+      "itemPrice": 200.0,
+      "itemTax": 50.0,
       "stock_ID": 12
     }
   ]
