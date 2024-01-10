@@ -9,81 +9,79 @@ const connection = dbConnection;
 
 const order = {
   CustomerInfo: {
-    firstName: "Mikkel",
-    lastName: "Mikkelsen",
-    adress: "Bådhavnsvej 3",
-    zipCode: 3390,
+    firstName: "Jovan",
+    lastName: "Pasovski",
+    adress: "Molen 81",
+    zipCode: "3390",
     city: "Hundested",
-    email: "LL431@gmail.com"
+    email: "JovanPasovski@gmail.uk",
   },
   OdrderInfo: {
     status: "ordered",
-    deliveryAdress: "Bådhavnsvej 3",
-    deliveryZipCode: 3390,
+    deliveryAdress: "Molen 81",
+    deliveryZipCode: "3390",
     deliveryCity: "Hundested",
-    totalTax: 260.00,
-    totalPrice: 640.00,
-    shippingPrice: 40.00
+    totalTax: 260.0,
+    totalPrice: 640.0,
+    shippingPrice: 40.0,
   },
   Order_Lines: [
     {
-      catalogue_ID: 1,
+      catalogue_ID: 11,
       amount: 3,
       productSize: 2,
-      itemPrice: 400.00,
-      itemTax: 45.00,
-      stock_ID: 3
+      itemPrice: 400.0,
+      itemTax: 45.0,
+      stock_ID: 3,
     },
     {
-      catalogue_ID: 12,
+      catalogue_ID: 14,
       amount: 1,
       productSize: 10,
-      itemPrice: 100.00,
-      itemTax: 22.00,
-      stock_ID: 12
-    }
-  ]
-};
-
-const orderJSON = {
-  "CustomerInfo": {
-    "firstName": "Mikkel",
-    "lastName": "Mikkelsen",
-    "adress": "Bådhavnsvej 3",
-    "zipCode": 3390,
-    "city": "Hundested",
-    "email": "LL431@gmail.com",
-  },
-  "OdrderInfo": {
-    "status": "ordered",
-    "deliveryAdress": "Bådhavnsvej 3",
-    "deliveryZipCode": 3390,
-    "deliveryCity": "Hundested",
-    "totalTax": 260.0,
-    "totalPrice": 640.0,
-    "shippingPrice": 40.0,
-  },
-  "Order_Lines": [
-    {
-      "catalogue_ID": 1,
-      "amount": 3,
-      "productSize": 2,
-      "itemPrice": 400.0,
-      "itemTax": 45.0,
-      "stock_ID": 3,
-    },
-    {
-      "catalogue_ID": 12,
-      "amount": 1,
-      "productSize": 10,
-      "itemPrice": 100.0,
-      "itemTax": 22.0,
-      "stock_ID": 12,
+      itemPrice: 100.0,
+      itemTax: 22.0,
+      stock_ID: 12,
     },
   ],
 };
 
-
+const orderJSON ={
+  "CustomerInfo": {
+    "firstName": "Jovan",
+    "lastName": "Pasovski",
+    "adress": "Molen 81",
+    "zipCode": "3390",
+    "city": "Hundested",
+    "email": "JovanPasovski@gmail.uk"
+  },
+  "OdrderInfo": {
+    "status": "ordered",
+    "deliveryAdress": "Molen 81",
+    "deliveryZipCode": "3390",
+    "deliveryCity": "Hundested",
+    "totalTax": 260.0,
+    "totalPrice": 640.0,
+    "shippingPrice": 40.0
+  },
+  "Order_Lines": [
+    {
+      "catalogue_ID": 11,
+      "amount": 3,
+      "productSize": 2,
+      "itemPrice": 400.0,
+      "itemTax": 45.0,
+      "stock_ID": 3
+    },
+    {
+      "catalogue_ID": 14,
+      "amount": 1,
+      "productSize": 10,
+      "itemPrice": 100.0,
+      "itemTax": 22.0,
+      "stock_ID": 12
+    }
+  ]
+};
 
 
 // Reads the catalogue data
@@ -112,13 +110,14 @@ makeOrderRouter.post("/", async (request, response) => {
     const [customerResult] = await createCustomer(customer);
     const customerId = customerResult.insertId;
 
+    /* VI SKAL HAVE CUSTOMER-ID'et OG vi skal SENDE DET MED. Hvordan... */
+    // const customerID = customer.id;
+
     if (!customerResult) {
       console.error(error);
-      response
-        .status(500)
-        .json({
-          message: "An Internal Server Error Has Occured - customerResult",
-        });
+      response.status(500).json({
+        message: "An Internal Server Error Has Occured - customerResult",
+      });
     } else {
       // response.json(customerResult);
       const [orderResult] = await createOrder(order, customerId);
@@ -134,13 +133,15 @@ makeOrderRouter.post("/", async (request, response) => {
           const [productResult] = await createOrderLine(product, orderId);
           if (!productResult) {
             console.error(error);
-            response.status(500).json({message: "An Internal Server Error Has Occured - productResult",});
+            response.status(500).json({
+              message: "An Internal Server Error Has Occured - productResult",
+            });
             break;
           }
         }
       }
       await connection.commit();
-            response.json({ message: " An oder has sucessfully ben created" });
+      response.json({ message: " An oder has sucessfully ben created" });
     }
   } catch (error) {
     console.error(error);
