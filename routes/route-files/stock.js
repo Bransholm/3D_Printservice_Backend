@@ -56,59 +56,81 @@ stockRouter.get("/:id", async (request, response) => {
   }
 });
 
+// UPDATE specific catalogue itme
+stockRouter.put("/:id", async (request, response) => {
+  await dbConnection.beginTransaction();
 
-async function updateStockItemQuery(id, request) {
   const body = request.body;
-  // Update query
+  const id = request.params.id;
+
+  try{
+  const stockUpdateResult = await updateStockItemQuery(body,id);
+  if(!stockUpdateResult || stockUpdateResult.affectedRows === 0){
+    rowIdNotFoundResponse(id, response)
+  } 
+  // else {
+  //   response.json(stockUpdateResult[0]);
+  // }
+  response.json({message: " A stock material has sucessfully ben updated" });
+  await dbConnection.commit();
+
+  }catch (error){
+   console.error(error);
+   await dbConnection.rollback();
+   response.status(500).json({message: "An Internal Server Error Has Occured"})
+  }
+
+});
+
+async function updateStockItemQuery(stock, id) {
+  console.log("Query request: ", stock);
   const queryString =
     /*sql*/
-    `UPDATE stock SET Name=?, Material=?, Colour=?, GramInStock=?, Active=?, SalesPrice=? WHERE Id=?`;
-  const values = [
-    body.name,
-    body.material,
-    body.colour,
-    body.gramInStock,
-    body.active,
-    body.salesPrice,
+    `UPDATE  Stock SET Name=?, Material = ?,  Colour = ? , GramInStock  = ? , Active = ?, SalesPrice = ? WHERE Id = ?;`;
+  
+    const updateValues = [
+    stock.name,
+    stock.material,
+    stock.colour,
+    stock.gramInStock,
+    stock.active,
+    stock.salesPrice,
     id,
   ];
 
-  // Execute the update query within the transaction
-  const [result] = await dbConnection.query(queryString, values);
+  /* DO WE USE QUERY OR EXECUTE */
+  const [result] = await dbConnection.execute(queryString, updateValues);
   return result;
 }
 
 
-// UPDATE specific catalogue itme
-stockRouter.put("/:id", async (request, response) => {
-  const id = request.params.id;
-  console.log("put route id: ", id)
+// // updates a row in the Customers table
+// customersRouter.put("/:id", async (request, response) => {
+//   await dbConnection.beginTransaction();
 
-  let result;
-  try {
-    // Start a transaction
-    await dbConnection.beginTransaction();
+//   const body = request.body;
+//   const id = request.params.id;
+//   console.log(body);
+//   try {
+//     const customerResult = await updateCustomer(body, id);
+//     if (!customerResult || customerResult.affectedRows === 0) {
+//       rowIdNotFoundResponse(id, response);
+//     }
+//     //else {
+//     //   response.json(customerResult[0]);
+//     // }
+//     response.json({ message: " A customer has sucessfully ben updated" });
+//     await dbConnection.commit();
+//   } catch (error) {
+//     console.error(error);
+//     await dbConnection.rollback();
 
-    try {
-      result = await updateStockItemQuery(id, request);
+//     response
+//       .status(500)
+//       .json({ message: "An Internal Server Error Has Occured" });
+//   }
+// });
 
-      // Commit the transaction if the update is successful
-      await dbConnection.commit();
-
-      if (!result || result.affectedRows === 0) {
-        rowIdNotFoundResponse(id, response);
-      } else {
-        response.json(result);
-      }
-    } catch (error) {
-      // Rollback the transaction incase of an error
-      await dbConnection.rollback();
-      InternalServerErrorResponse(error, response);
-    }
-  } catch (error) {
-    InternalServerErrorResponse(response, error);
-  }
-});
 
 // DELETE item from Catalogue
 stockRouter.delete("/:id", async (request, response) => {
