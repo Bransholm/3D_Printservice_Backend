@@ -31,8 +31,6 @@ catalogueRouter.post("/", async (request, response) => {
   }
 });
 
-
-
 // Get Catalogue router that works with filter and search
 catalogueRouter.get("/", async (request, response) => {
   try {
@@ -40,37 +38,22 @@ catalogueRouter.get("/", async (request, response) => {
     const search = request.query.search;
     let queryString = "";
 
+    console.log(filter);
+
     if (filter === "all") {
       if (search === "") {
         queryString = /*sql*/ `SELECT * FROM catalogue;`;
       } else if (search !== "") {
         queryString = /*sql*/ `SELECT * FROM catalogue where Title LIKE '%${search}%';`;
       }
-    } else if (filter === "Bygninger") {
-      if (search === "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Bygninger";`;
-      } else if (search !== "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Bygninger" AND Title LIKE '%${search}%';`;
-      }
-    } else if (filter === "Dyr") {
-      if (search === "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Dyr";`;
-      } else if (search !== "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Dyr" AND Title LIKE '%${search}%';`;
-      }
-    } else if (filter === "Eventyr") {
-      if (search === "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Eventyr";`;
-      } else if (search !== "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Eventyr" AND Title LIKE '%${search}%';`;
-      }
-    } else if (filter === "Sci-fi") {
-      if (search === "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi";`;
-      } else if (search !== "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi" AND Title LIKE '%${search}%';`;
-      }
-    } else {
+    } else if (filter === "Bygninger" || filter === "Dyr" || filter === "Eventyr" || filter === "Sci-fi") {
+  if (search === "") {
+    queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${filter}';`;
+  } else if (search !== "") {
+    queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${filter}' AND Title LIKE '%${search}%';`;
+  }
+}
+ else {
       queryString = /*sql*/ `SELECT * FROM catalogue;`;
     }
 
@@ -83,6 +66,57 @@ catalogueRouter.get("/", async (request, response) => {
       .json({ message: "An Internal Server Error Has Occured" });
   }
 });
+
+// Get Catalogue router that works with filter and search
+// catalogueRouter.get("/", async (request, response) => {
+//   try {
+//     const filter = request.query.filter;
+//     const search = request.query.search;
+//     let queryString = "";
+
+//     if (filter === "all") {
+//       if (search === "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue;`;
+//       } else if (search !== "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Title LIKE '%${search}%';`;
+//       }
+//     } else if (filter === "Bygninger") {
+//       if (search === "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Bygninger";`;
+//       } else if (search !== "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Bygninger" AND Title LIKE '%${search}%';`;
+//       }
+//     } else if (filter === "Dyr") {
+//       if (search === "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Dyr";`;
+//       } else if (search !== "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Dyr" AND Title LIKE '%${search}%';`;
+//       }
+//     } else if (filter === "Eventyr") {
+//       if (search === "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Eventyr";`;
+//       } else if (search !== "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Eventyr" AND Title LIKE '%${search}%';`;
+//       }
+//     } else if (filter === "Sci-fi") {
+//       if (search === "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi";`;
+//       } else if (search !== "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Category = "Sci-fi" AND Title LIKE '%${search}%';`;
+//       }
+//     } else {
+//       queryString = /*sql*/ `SELECT * FROM catalogue;`;
+//     }
+
+//     const [result] = await dbConnection.execute(queryString);
+//     response.json(result);
+//   } catch (error) {
+//     console.error(error);
+//     response
+//       .status(500)
+//       .json({ message: "An Internal Server Error Has Occured" });
+//   }
+// });
 
 // Get catalogue item by ID
 catalogueRouter.get("/:id", async (request, response) => {
