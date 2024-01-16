@@ -42,19 +42,19 @@ catalogueRouter.get("/", async (request, response) => {
 
     if (filter === "all") {
       if (search === "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue;`;
+        queryString = /*sql*/ `SELECT * FROM catalogue WHERE Active = 1;`;
       } else if (search !== "") {
-        queryString = /*sql*/ `SELECT * FROM catalogue where Title LIKE '%${search}%';`;
+        queryString = /*sql*/ `SELECT * FROM catalogue WHERE Title LIKE '%${search}%' AND Active = 1;`;
       }
     } else if (filter === "Bygninger" || filter === "Dyr" || filter === "Eventyr" || filter === "Sci-fi") {
   if (search === "") {
-    queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${filter}';`;
+    queryString = /*sql*/ `SELECT * FROM catalogue WHERE Category = '${filter}' AND Active = 1;`;
   } else if (search !== "") {
-    queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${filter}' AND Title LIKE '%${search}%';`;
+    queryString = /*sql*/ `SELECT * FROM catalogue WHERE Category = '${filter}' AND Title LIKE '%${search}%' AND Active = 1;`;
   }
 }
  else {
-      queryString = /*sql*/ `SELECT * FROM catalogue;`;
+      queryString = /*sql*/ `SELECT * FROM catalogue WHERE Active = 1;`;
     }
 
     const [result] = await dbConnection.execute(queryString);
@@ -66,6 +66,42 @@ catalogueRouter.get("/", async (request, response) => {
       .json({ message: "An Internal Server Error Has Occured" });
   }
 });
+
+// Get Catalogue router that works with filter and search
+// catalogueRouter.get("/", async (request, response) => {
+//   try {
+//     const filter = request.query.filter;
+//     const search = request.query.search;
+//     let queryString = "";
+
+//     console.log(filter);
+
+//     if (filter === "all") {
+//       if (search === "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue;`;
+//       } else if (search !== "") {
+//         queryString = /*sql*/ `SELECT * FROM catalogue where Title LIKE '%${search}%';`;
+//       }
+//     } else if (filter === "Bygninger" || filter === "Dyr" || filter === "Eventyr" || filter === "Sci-fi") {
+//   if (search === "") {
+//     queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${filter}';`;
+//   } else if (search !== "") {
+//     queryString = /*sql*/ `SELECT * FROM catalogue where Category = '${filter}' AND Title LIKE '%${search}%';`;
+//   }
+// }
+//  else {
+//       queryString = /*sql*/ `SELECT * FROM catalogue;`;
+//     }
+
+//     const [result] = await dbConnection.execute(queryString);
+//     response.json(result);
+//   } catch (error) {
+//     console.error(error);
+//     response
+//       .status(500)
+//       .json({ message: "An Internal Server Error Has Occured" });
+//   }
+// });
 
 // Get Catalogue router that works with filter and search
 // catalogueRouter.get("/", async (request, response) => {
