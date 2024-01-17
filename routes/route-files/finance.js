@@ -11,7 +11,9 @@ financeRouter.get("/", async (request, response) => {
     const queryString =
       /*sql*/
       `
-        SELECT * from order_lines;
+        SELECT SUM(TotalPrice) AS CombinedPrice FROM orders
+        WHERE Status IN ('paid', 'delivered')
+        AND DATE(TimeDate) BETWEEN '${startDate}' AND '${endDate}';
     `;
     const [result] = await dbConnection.execute(queryString);
     response.json(result);
