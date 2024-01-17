@@ -12,6 +12,7 @@ import customersRouter from "./routes/route-files/customer.js";
 import viewOrdrerRouter from "./routes/route-files/view-ordrer.js";
 import makeOrderExistingCustomerRouter from "./routes/route-files/make-order-existing-customer.js";
 import variablesRouter from "./routes/route-files/variables.js";
+import financeRouter from "./routes/route-files/finance.js";
 
 const app = express();
 const port = process.env.PORT || 4811;
@@ -29,6 +30,7 @@ app.use("/makeOrder", makeOrderRouter);
 app.use("/makeOrderExistingCustomer", makeOrderExistingCustomerRouter);
 app.use("/viewOrdrer", viewOrdrerRouter);
 app.use("/variables", variablesRouter);
+app.use("/finance", financeRouter);
 
 app.listen(port, () => {
   console.log(
